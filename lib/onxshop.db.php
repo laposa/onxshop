@@ -10,7 +10,6 @@
  */
 
 use Laminas\Db\Adapter\Adapter;
-use Laminas\Db\Sql\Sql;
 use Laminas\Db\TableGateway\TableGateway;
 
 class Onxshop_Db {
@@ -480,17 +479,19 @@ class Onxshop_Db {
         msg("{$this->_class_name}: Calling insert() " . print_r($data, true), 'ok', 3);
         if (is_array($data)) $this->setAll($data);
 
+
         if ($this->getValid()) {
             
             /**
              * try to insert
              */
+
              
             try {
                 //$this->db->insert($this->_class_name, $data); 
                 $table = new TableGateway($this->_class_name, $this->db);
                 $table->insert($data);
-            
+
                 if (is_numeric($data['id'])) {
                     $id = $data['id'];
                 } else {
@@ -506,7 +507,6 @@ class Onxshop_Db {
                 }
                 
                 msg("Inserting of record id:{$id} into {$this->_class_name} has been successful.", 'ok', 2);
-
                 return $id;
             
             } catch (Exception $e) {
@@ -545,9 +545,11 @@ class Onxshop_Db {
         if ($this->getValid()) {
             
             try {           
-                
                 $table = new TableGateway($this->_class_name, $this->db);
                 $table->update($data, ['id' => $data['id']]);
+
+
+
                // $ok = $this->db->update($this->_class_name, $data, "id = {$data['id']}");
                 msg("Record id:{$this->id} in {$this->_class_name} has been successfully updated.", 'ok', 2);
                 return $data['id'];
@@ -555,7 +557,7 @@ class Onxshop_Db {
             } catch (Exception $e) {
                 
                 msg($e->getMessage(), 'error', 1);
-                msg("Failed to update {$this->_class_name}: " . print_r($this->db->getDriver()->getConnection()->errorInfo(), true), 'error', 1);
+                msg("Failed to update {$this->_class_name}", 'error', 1);
                 
                 return false;
             }
@@ -610,7 +612,7 @@ class Onxshop_Db {
             } catch (Exception $e) {
                     
                 msg($e->getMessage(), 'error', 1);
-                msg("Failed to delete {$this->_class_name}: " . print_r($this->db->getDriver()->getConnection()->errorInfo(), true), 'error', 1);
+                msg("Failed to delete {$this->_class_name}:", 'error', 1);
                     
                 return false;
             }
@@ -644,7 +646,7 @@ class Onxshop_Db {
         } catch (Exception $e) {
                     
             msg($e->getMessage(), 'error', 1);
-            msg("Failed to deleteAll {$this->_class_name}: " . print_r($this->db->getDriver()->getConnection()->errorInfo(), true), 'error', 1);
+            msg("Failed to deleteAll {$this->_class_name}", 'error', 1);
                     
             return false;
         }
@@ -694,9 +696,6 @@ class Onxshop_Db {
             //$sql = "SELECT * FROM nothing"; // DELETE THIS DARREN DEBUGGING!
             $query = $this->db->query($sql, Adapter::QUERY_MODE_EXECUTE);
             $records = $query->toArray();
-            //$statement = $this->db->createStatement($sql);
-            //$records = $statement->execute()->current();
-
 
             if (is_array($records)) return $records;
             else return false;

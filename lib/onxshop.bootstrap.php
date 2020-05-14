@@ -6,7 +6,6 @@
  */
 
 use Laminas\Db\Adapter\Adapter;
-use Laminas\Db\Sql\Sql;
 
 class Onxshop_Bootstrap {
 
