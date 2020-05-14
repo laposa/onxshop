@@ -139,5 +139,3 @@ if (ONXSHOP_DB_PROFILER) {
     
     echo "<pre>" . htmlspecialchars(print_r($db_profile, true)) . "</pre>";
 }
-
-

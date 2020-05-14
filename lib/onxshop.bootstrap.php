@@ -5,6 +5,9 @@
  *
  */
 
+use Laminas\Db\Adapter\Adapter;
+use Laminas\Db\Sql\Sql;
+
 class Onxshop_Bootstrap {
 
     public $Onxshop;
@@ -34,6 +37,7 @@ class Onxshop_Bootstrap {
         require_once('Zend/Db.php');
         require_once('Zend/Registry.php');
         require_once('Zend/Cache.php');
+        require_once('vendor/autoload.php'); // add composer autoloads
 
         /**
          * Initialise database connection object
@@ -121,6 +125,7 @@ class Onxshop_Bootstrap {
          */
         
         $connection_parameters =  array(
+            'driver' => $adapter_name,
             'host'     => ONXSHOP_DB_HOST,
             'username' => ONXSHOP_DB_USER,
             'password' => ONXSHOP_DB_PASSWORD,
@@ -132,31 +137,29 @@ class Onxshop_Bootstrap {
         /**
          * connect
          */
-         
+
         try {
-            $db = Zend_Db::factory($adapter_name, $connection_parameters);
-            $db->getConnection();
-        }  catch (Zend_Db_Adapter_Exception $e) {
-            // perhaps a failed login credential, or perhaps the RDBMS is not running
-        } catch (Zend_Exception $e) {
-            // perhaps factory() failed to load the specified Adapter class
+            $db = new Adapter($connection_parameters);
+            $db->getDriver()->getConnection()->connect();
+        } catch(Exception $e) {
+
         }
-        
+
         /**
          * check connection
          */
          
-        if (!$db->isConnected()) {
+        if (!$db->getDriver()->getConnection()->isConnected()) {
             header("HTTP/1.1 503 Service Unavailable");
             die('Our site is temporarily unavailable, please try again later.');
         }
-        
+
         /**
          * profiler
          */
          
         if (ONXSHOP_IS_DEBUG_HOST) {
-            $db->getProfiler()->setEnabled(true);
+            //$db->getProfiler()->setEnabled(true);
         }
         
         /**
