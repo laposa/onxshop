@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2009-2015 Laposa Limited (https://laposa.ie)
+ * Copyright (c) 2009-2021 Laposa Limited (https://laposa.ie)
  * Licensed under the New BSD License. See the file LICENSE.txt for details.
  * 
  */
@@ -14,6 +14,15 @@ class Onyx_Controller_Node_Container_Default extends Onyx_Controller_Node {
      */
      
     public function mainAction() {
+
+        return true;
+    }
+
+    /**
+     * redirect to first parent page
+     */
+     
+    public function redirectToFirstParentPage() {
         
         /**
          * include node configuration
